@@ -1,237 +1,619 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Portfolio by @richtsai</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Draco is free PSD &amp; HTML template by @afnizarnur">
-    <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/kube.min.css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css" />
-    <link rel="stylesheet" href="css/custom.min.css" />
-	<link href='http://fonts.googleapis.com/css?family=Playfair+Display+SC:700' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-	<style>
-		.intro h1:before {
-			/* Edit this with your name or anything else */
-			content: 'Rich Tsai';
-		}
-	</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rich (Chen-Feng) Tsai</title>
+<meta name="description" content="Rich (Chen-Feng) Tsai: researcher in generative models for music and audio, composer and sound designer.">
+<meta property="og:title" content="Rich (Chen-Feng) Tsai">
+<meta property="og:description" content="Generative models for music and audio. Composer and sound designer.">
+<meta name="theme-color" content="#15111F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15111F;
+    --bg-2:#1D1729;
+    --bg-3:#261E36;
+    --ink:#EFEBF6;
+    --ink-2:#B9B1CC;
+    --ink-3:#857C9C;
+    --line:#2F2742;
+    /* spectrogram ramp */
+    --m1:#3B1F6B; --m2:#7C2B7E; --m3:#C7426F; --m4:#F27A5E; --m5:#FBD08A;
+    --link:#F59A72;
+    --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+    --sans:"Figtree", "Helvetica Neue", Arial, sans-serif;
+    --measure:40rem;
+    --wrap:72rem;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;line-height:1.65}
+  a{color:var(--link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:rgba(245,154,114,.45)}
+  a:hover{text-decoration-color:currentColor}
+  :focus-visible{outline:2px solid var(--m5);outline-offset:3px;border-radius:3px}
+  img{max-width:100%;height:auto;display:block}
+  p{margin:0 0 1rem;max-width:var(--measure)}
+  i,em{font-style:italic}
+
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 2rem}
+
+  /* top bar */
+  .bar{position:sticky;top:0;z-index:10;background:rgba(21,17,31,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+  .bar.scrolled{border-bottom-color:var(--line)}
+  .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:3.75rem;gap:1.5rem}
+  .bar .mark{font-family:var(--serif);font-size:1.35rem;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .bar nav{display:flex;gap:1.6rem;font-size:.94rem}
+  .bar nav a{color:var(--ink-2);text-decoration:none}
+  .bar nav a:hover,.bar nav a[aria-current="true"]{color:var(--ink)}
+
+  /* hero */
+  .hero{padding:4.5rem 0 0}
+  .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,7.5vw,6.25rem);line-height:1;letter-spacing:-.025em;font-optical-sizing:auto;margin:0 0 1.25rem}
+  .hero .alt{font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,2.4vw,1.75rem);color:var(--ink-3);margin:-.5rem 0 1.5rem}
+  .hero .sub{font-size:clamp(1.15rem,1.9vw,1.4rem);line-height:1.45;color:var(--ink-2);max-width:38rem;margin:0}
+  .spec{position:relative;margin:3rem 0 0;height:clamp(150px,22vw,250px)}
+  .spec canvas{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:6px}
+  .spec .axis{position:absolute;left:0;right:0;bottom:-1.6rem;display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+  .intro{display:grid;grid-template-columns:11rem minmax(0,1fr);gap:2.5rem;align-items:start;padding:5rem 0 0}
+  .intro .portrait{width:11rem;height:11rem;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px var(--line),0 0 0 6px var(--bg),0 0 0 7px rgba(199,66,111,.45)}
+  .intro p{color:var(--ink-2)}
+  .intro p strong{color:var(--ink);font-weight:500}
+  .links{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0;padding:0;list-style:none}
+  .links a{display:inline-flex;align-items:center;gap:.45rem;padding:.42rem .95rem;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;font-size:.92rem;background:var(--bg-2)}
+  .links a:hover{border-color:var(--ink-3);background:var(--bg-3)}
+  .links a.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .links a.primary:hover{background:#fff}
+  .links svg{width:1rem;height:1rem;flex:none}
+
+  /* sections */
+  section.block{padding:6rem 0 0;scroll-margin-top:3rem}
+  .block-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.9rem;margin-bottom:2.5rem}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,4vw,2.9rem);line-height:1.05;letter-spacing:-.015em;margin:0}
+  .block-head .aside{color:var(--ink-3);font-size:.92rem}
+  h3{font-weight:600;font-size:1.2rem;line-height:1.35;margin:0 0 .4rem;letter-spacing:-.005em}
+
+  /* research */
+  .work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3rem;margin-bottom:4.5rem;align-items:start}
+  .work:last-child{margin-bottom:0}
+  .work .venue{display:inline-block;font-size:.84rem;font-weight:500;color:var(--bg);background:var(--m5);border-radius:999px;padding:.12rem .65rem;margin-bottom:.9rem}
+  .work .venue.review{background:transparent;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+  .work p{color:var(--ink-2)}
+  .results{list-style:none;margin:1.25rem 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .results li{background:var(--bg-2);padding:1rem 1.1rem}
+  .results b{display:block;font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.1;color:var(--ink)}
+  .results span{font-size:.88rem;color:var(--ink-2);line-height:1.4;display:block;margin-top:.25rem}
+  .btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.25rem}
+  .btns a{font-size:.88rem;padding:.3rem .8rem;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none}
+  .btns a:hover{border-color:var(--ink-3)}
+
+  /* codebook figure */
+  .fig{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:1.4rem}
+  .fig-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+  .fig-top .t{font-weight:500;font-size:.98rem}
+  .seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg button{font:inherit;font-size:.85rem;border:0;background:transparent;color:var(--ink-2);padding:.28rem .85rem;border-radius:999px;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+  .cb{display:grid;grid-template-columns:auto repeat(10,minmax(0,1fr));gap:6px;align-items:center}
+  .cb .lab{font-size:.78rem;color:var(--ink-3);padding-right:.35rem;white-space:nowrap}
+  .cb .c{aspect-ratio:1/1;border-radius:5px;transition:background-color .4s ease, box-shadow .4s ease}
+  .cb .c.bad{background:var(--m5)!important;box-shadow:0 0 14px rgba(251,208,138,.45)}
+  .cb .tl{grid-column:2/-1;display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-3);margin-top:.15rem}
+  .fig .key{display:flex;gap:1rem;flex-wrap:wrap;font-size:.82rem;color:var(--ink-2);margin:1.1rem 0 .7rem}
+  .fig .key i{display:inline-block;width:.7rem;height:.7rem;border-radius:3px;margin-right:.4rem;vertical-align:-.04rem;font-style:normal}
+  .fig .note{font-size:.9rem;color:var(--ink-2);margin:0;line-height:1.55}
+  .fig .stat{font-family:var(--serif);font-size:1.5rem;color:var(--ink);margin-left:.15rem}
+  .plate{background:#F3F0F7;border-radius:10px;padding:1.25rem;margin:0}
+  .plate img{width:100%;max-width:24rem;margin:0 auto}
+  .plate figcaption{color:#4B4360;font-size:.84rem;text-align:center;margin-top:.5rem}
+
+  /* works */
+  .credits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+  .credit{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:1.5rem;position:relative;overflow:hidden}
+  .credit::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--m1),var(--m3),var(--m5))}
+  .credit .kind{font-size:.84rem;color:var(--ink-3);margin:0 0 .75rem}
+  .credit h3{font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.1;margin-bottom:.6rem}
+  .credit p{font-size:.97rem;color:var(--ink-2);margin-bottom:.6rem}
+  .credit .role{font-size:.86rem;color:var(--ink);margin:0}
+  .instr{list-style:none;margin:0;padding:0;font-size:.97rem}
+  .instr li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .instr li:last-child{border-bottom:0}
+  .instr li span:last-child{color:var(--ink-3);font-size:.86rem;white-space:nowrap}
+
+  .tracks{list-style:none;margin:2.5rem 0 0;padding:0;border-top:1px solid var(--line)}
+  .tracks[hidden]{display:none}
+  .track{display:grid;grid-template-columns:2.75rem minmax(0,1.1fr) minmax(0,2fr) 3.5rem;gap:1.1rem;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line)}
+  .track .play{width:2.75rem;height:2.75rem;border-radius:50%;border:1px solid var(--line);background:var(--bg-2);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+  .track .play:hover{border-color:var(--ink-3)}
+  .track .play svg{width:1rem;height:1rem}
+  .track .play[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .track .meta b{display:block;font-weight:500;line-height:1.3}
+  .track .meta span{font-size:.86rem;color:var(--ink-3)}
+  .track .wave{height:2.5rem;width:100%;cursor:pointer;display:block}
+  .track .dur{font-size:.84rem;color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+  .track{grid-template-columns:2.75rem minmax(0,1.3fr) minmax(0,1.6fr) 6.5rem}
+  .track .out-wrap{justify-self:end;text-align:right;line-height:1.3}
+  .track .out-wrap .dur{display:block}
+  .track a.out{font-size:.9rem}
+  .tracks li.group{font-family:var(--serif);font-size:1.5rem;color:var(--ink);padding:2rem 0 .6rem;border-bottom:1px solid var(--line)}
+  .tracks li.group:first-child{padding-top:0}
+  .tracks{border-top:0}
+
+  /* publications */
+  .pubs{list-style:none;margin:0;padding:0}
+  .pubs li{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:1.5rem;padding:1.4rem 0;border-bottom:1px solid var(--line)}
+  .pubs li:first-child{padding-top:0}
+  .pubs .tag{font-family:var(--serif);font-size:1.45rem;line-height:1.1;color:var(--ink)}
+  .pubs .tag span{display:block;font-family:var(--sans);font-size:.84rem;color:var(--ink-3);margin-top:.2rem}
+  .pubs .t{font-weight:500;font-size:1.08rem;line-height:1.45;margin:0 0 .3rem}
+  .pubs .a{font-size:.95rem;color:var(--ink-2);margin:0 0 .15rem}
+  .pubs .a b{color:var(--ink);font-weight:600}
+  .pubs .v{font-size:.95rem;font-style:italic;color:var(--ink-3);margin:0}
+  .pubs .btns{margin-top:.7rem}
+
+  /* experience */
+  .cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:4rem}
+  .tl{list-style:none;margin:0;padding:0}
+  .tl li{display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:1.25rem;padding:1.1rem 0;border-bottom:1px solid var(--line)}
+  .tl li:first-child{padding-top:0}
+  .tl .when{font-size:.86rem;color:var(--ink-3);padding-top:.15rem;font-variant-numeric:tabular-nums}
+  .tl h3{font-size:1.02rem;margin:0}
+  .tl .where{margin:0 0 .3rem;color:var(--ink-2);font-size:.94rem}
+  .tl .d{font-size:.94rem;color:var(--ink-2);margin:0}
+  .sub-h{font-family:var(--serif);font-weight:400;font-size:1.75rem;margin:0 0 1.1rem}
+  .side-list{list-style:none;margin:0 0 2.75rem;padding:0}
+  .side-list li{padding:.75rem 0;border-bottom:1px solid var(--line)}
+  .side-list li:first-child{padding-top:0}
+  .side-list b{display:block;font-weight:500}
+  .side-list span{font-size:.92rem;color:var(--ink-2)}
+  .side-list a{color:var(--ink)}
+
+  .projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem}
+  .projects h3{font-size:1.02rem}
+  .projects h3 a{color:var(--ink)}
+  .projects p{font-size:.95rem;color:var(--ink-2);margin-bottom:.4rem}
+  .projects .stack{font-size:.84rem;color:var(--ink-3)}
+
+  footer{margin-top:6rem;border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--ink-3);font-size:.88rem}
+  footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+
+  @media (max-width:960px){
+    .bar nav{gap:1.1rem}
+    .work,.cols{grid-template-columns:1fr;gap:2rem}
+    .credits{grid-template-columns:1fr 1fr}
+    .projects{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:720px){
+    .wrap{padding:0 1.25rem}
+    .bar nav{display:none}
+    .hero{padding-top:2.5rem}
+    .intro{grid-template-columns:1fr;gap:1.5rem;padding-top:4rem}
+    .intro .portrait{width:7.5rem;height:7.5rem}
+    .credits,.projects{grid-template-columns:1fr}
+    .pubs li,.tl li{grid-template-columns:1fr;gap:.35rem}
+    .track{grid-template-columns:2.75rem minmax(0,1fr) auto}
+    .track .wave{display:none}
+    section.block{padding-top:4.5rem}
+    .cb{gap:4px}
+  }
+</style>
 </head>
 <body>
-	<!-- Navigation -->
-	<div class="main-nav">
-		<div class="container">
-			<header class="group top-nav">
-				<div class="navigation-toggle" data-tools="navigation-toggle" data-target="#navbar-1">
-				    <span class="logo">Rich Tsai</span>
-				</div>
-			    <nav id="navbar-1" class="navbar item-nav">
-				    <ul>
-				        <li class="active"><a href="#about">About</a></li>
-                        <li><a href="#research">Research</a></li>
-                        <li><a href="#publications">Publications</a></li>
-                        <li><a href="#projects">Projects</a></li>
-				        <li><a href="#experiences">Experiences</a></li>
-				        <li><a href="#skills">Skills</a></li>
-				    </ul>
-				</nav>
-			</header>
-		</div>
-	</div>
 
-	<!-- Introduction -->
-	<div class="intro section" id="about">
-		<div class="container">
-			<p>Hi, I’m Rich (Chen-Feng) Tsai</p>
-			<div class="units-row units-split wrap">
-				<div class="unit-20">
-					<img src="img/IMG_6051.jpg" alt="Avatar">
-				</div>
-				<div class="unit-80">
-					<h1>Passionate About<br><span id="typed"></span></h1>
-				</div>
-				<p>
-                    I am a machine learning researcher with an M.S. in Applied Data Science from the University of Chicago (GPA 3.97/4.0) and a B.A. in Data Science and Economics from UC Berkeley. My research focuses on generative models for audio and sequential data, autoregressive and multi-codebook architectures, multi-task learning and knowledge distillation, and robustness in long-horizon generation. I currently work as a Research & Development Specialist at Academia Sinica, with publications at ISMIR, ACM SIGIR, and under review at AAAI.
-                </p>
-                <div class="social-links">
-                    <p><strong><span style="font-size: 1.2em;">Email:   </span></strong><a href="mailto:rich.tsai1103@gmail.com">rich.tsai1103@gmail.com</a></p>
-                    <p><strong><span style="font-size: 1.2em;">Github:   </span></strong><a href="https://github.com/ChenFengTsai" target="_blank" rel="noopener noreferrer">https://github.com/ChenFengTsai</a></p>
-                    <p><strong><span style="font-size: 1.2em;">Medium:   </span></strong><a href="https://medium.com/@rich.tsai1103" target="_blank" rel="noopener noreferrer">https://medium.com/@rich.tsai1103</a></p>
-                    <p><strong><span style="font-size: 1.2em;">LinkedIn:   </span></strong><a href="https://www.linkedin.com/in/rich-chen-feng-tsai-4b4754180/" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/in/rich-chen-feng-tsai-4b4754180/</a></p>
-                </div>
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">Rich Tsai</a>
+    <nav aria-label="Sections">
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#works">Musical works</a>
+      <a href="#writing">Writing</a>
+      <a href="cv.pdf">CV</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="hero" aria-label="Introduction">
+      <h1>Rich Tsai</h1>
+      <p class="alt">Published as Chen-Feng Tsai</p>
+      <p class="sub">I build generative models for music and audio, and I write music for games and animation.</p>
+      <div class="spec" aria-hidden="true">
+        <canvas id="spec"></canvas>
+      </div>
+    </section>
+
+    <section class="intro" id="about" aria-label="About">
+      <img class="portrait" src="img/portrait.jpg" alt="Portrait of Rich Tsai" width="480" height="480">
+      <div>
+        <p><strong>I study why generative music models lose their structure over long horizons, and how to train them so they don’t.</strong> I’m a research and development specialist at the Institute of Information Science, Academia Sinica, advised by Mi-Yen Yeh, working on autoregressive and multi-codebook models, multi-task learning and knowledge distillation.</p>
+        <p>I’m also a working composer and sound designer, trained in classical piano and violin since childhood. Writing cues that must hold together for minutes at a time is what made me care whether generated music holds together as music, not just whether it scores well. I hold an M.S. in Applied Data Science from the University of Chicago and B.A. degrees in Data Science and Economics from UC Berkeley, and I’m applying to PhD programs in music technology.</p>
+        <ul class="links">
+          <li><a class="primary" href="cv.pdf">Download CV</a></li>
+          <li><a href="mailto:rich.tsai1103@gmail.com">rich.tsai1103@gmail.com</a></li>
+          <li><a href="https://github.com/ChenFengTsai">GitHub</a></li>
+          <li><a href="https://medium.com/@rich.tsai1103">Medium</a></li>
+          <li><a href="https://www.linkedin.com/in/rich-chen-feng-tsai-4b4754180/">LinkedIn</a></li>
+          <!-- <li><a href="https://scholar.google.com/citations?user=XXXX">Google Scholar</a></li> -->
+        </ul>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section class="block" id="research">
+      <div class="block-head"><h2>Research</h2></div>
+
+      <article class="work">
+        <div>
+          <span class="venue">ISMIR 2026</span>
+          <h3>Mitigating structural collapse in long-horizon music generation</h3>
+          <p>Multi-codebook music models like MusicGen fall apart late in long generations: rhythm loosens and timbre drifts. I showed this happens because small errors compound across both time and codebook depth. Structure-Aware Scheduled Sampling (SASS) trains the model on its own predictions, replacing whole frames at once so the codebooks stay consistent with each other.</p>
+          <ul class="results">
+            <li><b>5.6–10.0%</b><span>lower KL divergence than teacher-forced MusicGen</span></li>
+            <li><b>14.3%</b><span>better beat regularity, with no loss in text–audio alignment</span></li>
+            <li><b>A/B</b><span>preferred by listeners over teacher forcing and the 1.5B InspireMusic</span></li>
+            <li><b>Same</b><span>tokenizer, architecture and inference speed as MusicGen</span></li>
+          </ul>
+          <!-- Paired audio examples go well here once you have them: add tracks with project "SASS demo" in the WORKS list at the bottom of this file. -->
+          <div class="btns">
+            <!-- <a href="PAPER_URL">Paper</a> -->
+            <a href="https://github.com/ChenFengTsai/musicgen">Code</a>
+          </div>
+        </div>
+
+        <figure class="fig" style="margin:0" aria-labelledby="cb-note">
+          <div class="fig-top">
+            <span class="t">Errors across the codebook grid</span>
+            <div class="seg" role="group" aria-label="Training method">
+              <button type="button" data-mode="tf" aria-pressed="true">Teacher forcing</button>
+              <button type="button" data-mode="sass" aria-pressed="false">SASS</button>
             </div>
-		</div>
-	</div>
+          </div>
+          <div class="cb" id="cb"></div>
+          <div class="key" aria-hidden="true">
+            <span><i style="background:var(--m2)"></i>Coarse to fine codebooks</span>
+            <span><i style="background:var(--m5)"></i>Drifted token</span>
+          </div>
+          <p class="note" id="cb-note">Schematic, not experimental data. Each column is one time step of audio, each row one codebook.</p>
+        </figure>
+      </article>
 
-    <!-- Research Interests -->
-	<div class="work section second" id="research">
-		<div class="container">
-			<h1>Research<br>Interests</h1>
-			<ul class="work-list">
-				<li>Focus Areas</li>
-				<li>Generative models for audio and sequential data</li>
-				<li>Autoregressive and multi-codebook architectures</li>
-				<li>Multi-task learning and knowledge distillation</li>
-				<li>Robustness and long-horizon generation</li>
-			</ul>
-		</div>
-	</div>
+      <article class="work">
+        <div>
+          <span class="venue review">Under review, AISTATS 2027</span>
+          <h3>Correlated tasks in multi-task world model distillation</h3>
+          <p>When one teacher world model is distilled from several related tasks, the student often does worse than with a single-task teacher. I showed this negative transfer can come from the teacher averaging over the tasks’ dynamics, which gradient-conflict diagnostics miss. Across 28 Meta-World task pairs, its cost tracked confusability-weighted dispersion (r = 0.90).</p>
+          <p>COMET, the teacher I designed, uses orthogonalized experts and a dynamics head per source task. It matched or beat separate single-task teachers on four out-of-distribution targets with 3.5× fewer parameters.</p>
+          <div class="btns"><a href="https://github.com/ChenFengTsai/COMET">Code</a></div>
+        </div>
+        <figure class="plate">
+          <img src="img/comet_architecture.png" alt="COMET architecture: an observation feeds K experts whose outputs are orthogonalized and combined by task weights into a latent state, which per-task dynamics heads use to predict the next state for distillation." width="918" height="858" loading="lazy">
+          <figcaption>COMET teacher architecture</figcaption>
+        </figure>
+      </article>
+    </section>
 
-    <!-- Publications -->
-	<div class="work section second" id="publications">
-		<div class="container">
-			<h1>Publications</h1>
-			<ul class="work-list">
-				<li>ISMIR 2026</li>
-				<li>Mitigating Structural Collapse in Multi-Codebook Autoregressive Music Generation via Structure-Aware Scheduled Sampling</li>
-				<li>International Society for Music Information Retrieval Conference (ISMIR), 2026</li>
-			</ul>
-			<ul class="work-list">
-				<li>2026</li>
-				<li>Rethinking Correlated Tasks in Multi-Task World Model Distillation: Beyond Gradient Conflict</li>
-				<li>AAAI, Under review, 2026</li>
-			</ul>
-			<ul class="work-list">
-				<li>May 2022</li>
-				<li><a href="https://dl.acm.org/doi/10.1145/3477495.3531674">An Interactive Dashboard on Top-k Recommendation for Cross-model Evaluation</a></li>
-				<li>ACM SIGIR, 2022 — a web-based system for visually comparing recommendation algorithms across multiple metrics</li>
-			</ul>
-			<ul class="work-list">
-				<li>March 2023</li>
-				<li><a href="https://arxiv.org/abs/2304.02868">Can Large Language Models Play Text Games Well? Current State-of-the-Art and Open Questions</a></li>
-				<li>arXiv preprint, 2023 — investigated ChatGPT's capacity for playing fictional text games</li>
-			</ul>
-		</div>
-	</div>
+    <!-- PUBLICATIONS -->
+    <section class="block" id="publications">
+      <div class="block-head"><h2>Publications</h2></div>
+      <ol class="pubs">
+        <li>
+          <div class="tag">ISMIR<span>2026</span></div>
+          <div>
+            <p class="t">Mitigating Structural Collapse in Multi-Codebook Autoregressive Music Generation via Structure-Aware Scheduled Sampling</p>
+            <!-- Replace with the full author list -->
+            <p class="a"><b>Chen-Feng Tsai</b>, et al.</p>
+            <p class="v">International Society for Music Information Retrieval Conference (ISMIR), 2026</p>
+            <div class="btns"><a href="https://github.com/ChenFengTsai/musicgen">Code</a></div>
+          </div>
+        </li>
+        <li>
+          <div class="tag">AISTATS<span>under review</span></div>
+          <div>
+            <p class="t">Rethinking Correlated Tasks in Multi-Task World Model Distillation: Beyond Gradient Conflict</p>
+            <p class="a"><b>Chen-Feng Tsai</b>, et al.</p>
+            <p class="v">Under review at AISTATS 2027</p>
+            <div class="btns"><a href="https://github.com/ChenFengTsai/COMET">Code</a></div>
+          </div>
+        </li>
+        <li>
+          <div class="tag">arXiv<span>2023</span></div>
+          <div>
+            <p class="t">Can Large Language Models Play Text Games Well? Current State-of-the-Art and Open Questions</p>
+            <p class="a"><b>Chen Feng Tsai</b>*, Xiaochen Zhou*, Sierra S. Liu, Jing Li, Mo Yu, Hongyuan Mei (*equal contribution)</p>
+            <p class="v">arXiv preprint 2304.02868, 2023</p>
+            <div class="btns"><a href="https://arxiv.org/abs/2304.02868">arXiv</a></div>
+          </div>
+        </li>
+        <li>
+          <div class="tag">SIGIR<span>2022</span></div>
+          <div>
+            <p class="t">RecDelta: An Interactive Dashboard on Top-k Recommendation for Cross-model Evaluation</p>
+            <p class="a">Yi-Shyuan Chiang, Yu-Ze Liu, <b>Chen-Feng Tsai</b>, Jing-Kai Lou, Ming-Feng Tsai, Chuan-Ju Wang</p>
+            <p class="v">Proceedings of the 45th International ACM SIGIR Conference (Demo Track), 2022, pp. 3224–3228</p>
+            <div class="btns"><a href="https://doi.org/10.1145/3477495.3531674">ACM DL</a></div>
+          </div>
+        </li>
+      </ol>
+    </section>
 
-    <!-- Projects -->
-	<div class="work section second" id="projects">
-		<div class="container">
-			<h1>Selected<br>Projects</h1>
-			<ul class="work-list">
-				<li>Autumn 2023</li>
-				<li><a href="https://github.com/ChenFengTsai/Liquid_Level_Drone">Drone Liquid Level Surveillance System — Capstone Lead</a></li>
-				<li>C++, YOLOv5, GCP Vertex AI — Honorable Mention, UChicago Autumn 2023 Capstone Showcase</li>
-				<li>Built an automated liquid-level monitoring system on a Tello drone with a YOLOv5 model fine-tuned on GCP to detect fill levels in production bottles, improving inventory-management efficiency</li>
-			</ul>
-			<ul class="work-list">
-				<li>March 2023</li>
-				<li><a href="https://github.com/ChenFengTsai/Crypto-real-time-trading-system">Real-time Crypto Trading System with Transformer Model</a></li>
-				<li>Leveraged a Transformer model and the Alpaca API for optimized real-time trade execution and enhanced decision making</li>
-			</ul>
-			<ul class="work-list">
-				<li>January 2023</li>
-				<li><a href="https://github.com/ChenFengTsai/SpeechRecognition_Emotion_Summary_API">Speech Emotion Detection & Summary API</a></li>
-				<li>Detected aggressive behavior from speech and summarized content to provide unbiased information via a voice-to-text pipeline</li>
-			</ul>
-			<ul class="work-list">
-				<li>December 2022</li>
-				<li><a href="https://github.com/ChenFengTsai/Music_Data_Lakehouse_Airflow_Redshift">Data Lakehouse Solution with Airflow & Redshift</a></li>
-				<li>Extracted music data from the Spotify Web API and built an end-to-end pipeline from ingestion to Athena analysis</li>
-			</ul>
-		</div>
-	</div>
+    <!-- EXPERIENCE -->
+    <section class="block" id="experience">
+      <div class="block-head"><h2>Experience</h2></div>
+      <div class="cols">
+        <ol class="tl">
+          <li>
+            <div class="when">2024–now</div>
+            <div>
+              <h3>Research &amp; Development Specialist</h3>
+              <p class="where">Institute of Information Science, Academia Sinica. Advisor: Mi-Yen Yeh</p>
+              <p class="d">Long-horizon music generation (SASS) and multi-task world model distillation (COMET).</p>
+            </div>
+          </li>
+          <li>
+            <div class="when">2024–2025</div>
+            <div>
+              <h3>Research Assistant</h3>
+              <p class="where">Helen Wills Neuroscience Institute, UC Berkeley. Advisor: Cécile Tissot</p>
+              <p class="d">Mixed-effects regression model to convert between tau PET tracers, improving cross-study comparability in Alzheimer’s research.</p>
+            </div>
+          </li>
+          <li>
+            <div class="when">2023</div>
+            <div>
+              <h3>Research Assistant</h3>
+              <p class="where">Toyota Technological Institute at Chicago. Advisor: Hongyuan Mei</p>
+              <p class="d">GPT-3 and LangChain agents that explore and map text adventure games such as <i>Zork</i>, cutting manual mapping effort by 90%.</p>
+            </div>
+          </li>
+          <li>
+            <div class="when">2021–2022</div>
+            <div>
+              <h3>Research Assistant</h3>
+              <p class="where">CITI, Academia Sinica. Advisor: Chuan-Ju Wang</p>
+              <p class="d">Bayesian Personalized Ranking recommender for a video-streaming partner, raising click-through rate by 23%; built the RecDelta evaluation dashboard.</p>
+            </div>
+          </li>
+        </ol>
+        <div>
+          <h3 class="sub-h">Education</h3>
+          <ul class="side-list">
+            <li><b>M.S. in Applied Data Science</b><span>University of Chicago, 2023. GPA 3.97 / 4.0</span></li>
+            <li><b>B.A. in Data Science and Economics</b><span>UC Berkeley, 2022</span></li>
+          </ul>
+          <h3 class="sub-h">Tools</h3>
+          <ul class="side-list">
+            <li><b>Machine learning</b><span>PyTorch, AudioCraft, TensorFlow, scikit-learn</span></li>
+            <li><b>Languages</b><span>Python, C++, SQL, R, Java, Scala</span></li>
+            <li><b>Music</b><span>Ableton Live</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-	<!-- Research Experience -->
-	<div class="award section second" id="experiences">
-		<div class="container">
-			<h1>Research<br>Experience</h1>
-            <ul class="award-list list-flat">
-				<li>2024 - Present</li>
-				<li><strong><span style="font-size: 1.1em;">Institute of Information Science, Academia Sinica</span></strong></li>
-				<li>Research & Development Specialist — Structure-Aware Scheduled Sampling for music generation; mixture-of-experts world model distillation</li>
-			</ul>
-			<ul class="award-list list-flat">
-				<li>2024 - 2025</li>
-				<li><strong><span style="font-size: 1.1em;">Helen Wills Neuroscience Institute, UC Berkeley</span></strong></li>
-				<li>Research Assistant — mixed-effects modeling to convert between tau PET tracers for Alzheimer's research</li>
-			</ul>
-			<ul class="award-list list-flat">
-				<li>2023</li>
-				<li><strong><span style="font-size: 1.1em;">Toyota Technological Institute at Chicago</span></strong></li>
-				<li>Research Assistant — GPT-3 and LangChain game-playing agents for text-based environments</li>
-			</ul>
-			<ul class="award-list list-flat">
-				<li>2021 - 2022</li>
-				<li><strong><span style="font-size: 1.1em;">Research Center for Information Technology Innovation (CITI), Academia Sinica</span></strong></li>
-				<li>Research Assistant — Bayesian Personalized Ranking recommendation system, +23% click-through rate</li>
-			</ul>
-		</div>
-	</div>
+    <!-- WORKS -->
+    <section class="block" id="works">
+      <div class="block-head"><h2>Musical works</h2><span class="aside"><a href="https://streetvoice.com/rich_feng1103/">StreetVoice</a>&ensp;<a href="https://www.mixcloud.com/richtsai1103/">Mixcloud</a></span></div>
+      <div class="credits">
+        <article class="credit">
+          <p class="kind">Rhythm game, Ultraviolet Studio</p>
+          <h3>Deemo</h3>
+          <p>More than 15 dynamic background tracks for the game.</p>
+          <p class="role">Composition, mixing, mastering. Ableton Live. 2024–present.</p>
+        </article>
+        <article class="credit">
+          <p class="kind">Animated series, 78 episodes</p>
+          <h3>DNA×CAT</h3>
+          <p>Original sound effects designed and edited for a Taiwanese animated series.</p>
+          <p class="role">Sound design and editing. 2024–present.</p>
+        </article>
+        <article class="credit">
+          <p class="kind">Training and performance</p>
+          <h3>Performer</h3>
+          <ul class="instr">
+            <li><span>Classical piano</span><span>since age 5</span></li>
+            <li><span>Classical violin</span><span>since age 8</span></li>
+            <li><span>Synthesizer, jazz guitar</span><span>pop, jazz</span></li>
+            <li><span>DJ, as INRICH</span><span>house</span></li>
+          </ul>
+          <p style="margin-top:.75rem;font-size:.9rem">Associate concertmaster, Dongshan High School Orchestra. Superior rating (特優), National Student Music Competition, 2016 and 2017.</p>
+        </article>
+      </div>
+      <!-- Tracks are filled in from the WORKS list in the script at the bottom of this file. -->
+      <ol class="tracks" id="tracks" hidden style="margin-top:3.5rem"></ol>
+    </section>
 
-	<!-- Technical Skills -->
-	<div class="skills section second" id="skills">
-		<div class="container">
-			<h1>Technical<br>Skills</h1>
-			<ul class="skill-list list-flat">
-				<li>ML / DL</li>
-				<li>PyTorch / TensorFlow / scikit-learn</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Programming Language</li>
-				<li>Python / C++ / SQL / R / Java / Scala</li>
-			</ul>
-            <ul class="skill-list list-flat">
-				<li>Infrastructure & Tools</li>
-				<li>Git / Docker / GCP / AWS / Azure / Spark</li>
-			</ul>
-            <ul class="skill-list list-flat">
-				<li>Data Warehouse</li>
-				<li>AWS Redshift / GCP BigQuery</li>
-			</ul>
-            <ul class="skill-list list-flat">
-				<li>Big Data Technology</li>
-				<li>Hadoop / Hive / Spark / Kafka</li>
-			</ul>
-            <ul class="skill-list list-flat">
-				<li>ELT / ETL Workflow</li>
-				<li>Airflow / dbt / Jenkins</li>
-			</ul>
-		</div>
-	</div>
+    <!-- WRITING + PROJECTS -->
+    <section class="block" id="writing">
+      <div class="block-head"><h2>Writing and projects</h2><a class="aside" href="https://medium.com/@rich.tsai1103">All posts on Medium</a></div>
+      <div class="projects">
+        <div>
+          <h3><a href="https://medium.com/@rich.tsai1103/data-lakehouse-with-airflow-for-spotify-analytics-workloads-67ac42f33adb">Data lakehouse with Airflow for Spotify analytics</a></h3>
+          <p>A walkthrough on Medium of an end-to-end pipeline that ingests Spotify Web API data into Redshift and S3 and makes it queryable in Athena. <a href="https://github.com/ChenFengTsai/Music_Data_Lakehouse_Airflow_Redshift">Code</a></p>
+          <p class="stack">Airflow, Redshift, Glue, Athena</p>
+        </div>
+        <div>
+          <h3><a href="https://github.com/ChenFengTsai/SpeechRecognition_Emotion_Summary_API">Speech emotion and summarization API</a></h3>
+          <p>Transcribes speech, flags aggressive tone with a BERT classifier and summarizes the content, served as a Flask web API.</p>
+          <p class="stack">TensorFlow, BERT, Flask</p>
+        </div>
+        <div>
+          <h3><a href="https://github.com/ChenFengTsai/Liquid_Level_Drone">Drone liquid-level monitoring</a></h3>
+          <p>Capstone lead. A Tello drone with a fine-tuned YOLOv5 model that reads bottle fill levels. Honorable Mention, UChicago Capstone Showcase 2023.</p>
+          <p class="stack">C++, YOLOv5, GCP Vertex AI</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
 
-	<!-- Quote -->
-	<div class="quote">
-		<div class="container text-centered">
-			<h1>One Step at a Time.</h1>
-		</div>
-	</div>
+<footer>
+  <div class="wrap">
+    <span>Rich (Chen-Feng) Tsai. Last updated November 2026.</span>
+    <span><a href="mailto:rich.tsai1103@gmail.com">rich.tsai1103@gmail.com</a></span>
+  </div>
+</footer>
 
-	<footer>
-		<div class="container">
-			<div class="units-row">
-			    <div class="unit-50">
-			    	<p></p>
-			    </div>
-			    <div class="unit-50">
-					<ul class="social list-flat right">
-						<li><a href="mailto:rich.tsai1103@gmail.com"><i class="fa fa-send"></i></a></li>
-						<li><a href="https://github.com/ChenFengTsai"><i class="fa fa-github"></i></a></li>
-						<li><a href="https://www.linkedin.com/in/rich-chen-feng-tsai-4b4754180/"><i class="fa fa-linkedin"></i></a></li>
-					</ul>
-			    </div>
-			</div>
-		</div>
-	</footer>
+<script>
+/* ---------------------------------------------------------------
+   YOUR MUSIC. Add one line per piece; the list appears under Musical works.
+   Use `src` for an audio file in this repo (plays on the page),
+   or `url` for StreetVoice / Mixcloud / SoundCloud (opens a new tab).
+   `group` puts tracks under a subheading; `platform` names the link.
+   Examples:
+   { title:"Track name", project:"Deemo", role:"Composition, mix", src:"audio/deemo-track.mp3" },
+   { title:"Track name", project:"Personal work", url:"https://soundcloud.com/..." },
+---------------------------------------------------------------- */
+var WORKS = [
+  { group:"Songs", title:"Blue", project:"Single, 2022", role:"Co-written with Ava Ting (vocals), mixed and produced", url:"https://streetvoice.com/rich_feng1103/songs/705814/", platform:"StreetVoice" },
+  { group:"Songs", title:"浪裡", project:"Single, 2022", role:"Written, mixed and produced", url:"https://streetvoice.com/rich_feng1103/songs/680501/", platform:"StreetVoice" },
+  { group:"DJ sets", title:"Mainstage Set", project:"As INRICH", role:"House, bass house, tech house", url:"https://www.mixcloud.com/richtsai1103/mainstage-set/", platform:"Mixcloud", length:"1:22:00" },
+];
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 
-	<!-- Javascript -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/typed.min.js"></script>
-    <script src="js/kube.min.js"></script>
-    <script src="js/site.js"></script>
-    <script>
-		function newTyped(){}$(function(){$("#typed").typed({
-		// Change to edit type effect
-		strings: ["Generative Audio", "Sequential Models", "Multi-Task Learning", "Machine Learning Research"],
+  /* ---------- hero spectrogram (synthetic, deterministic) ---------- */
+  var stops=[[21,17,31],[42,22,72],[92,32,112],[159,47,127],[212,72,108],[244,124,92],[252,196,130],[253,236,190]];
+  function cmap(v){v=Math.max(0,Math.min(1,v));var x=v*(stops.length-1),i=Math.floor(x),f=x-i,a=stops[i],b=stops[Math.min(i+1,stops.length-1)];
+    return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f];}
+  var COLS=360, ROWS=96, BPO=14; // bins per octave on a log axis
+  var field=(function(){
+    var R=rng(11),F=new Float32Array(COLS*ROWS);
+    function add(c,r,v){if(c<0||c>=COLS||r<0||r>=ROWS)return;var i=r*COLS+c;F[i]=Math.max(F[i],v);}
+    // noise floor
+    for(var i=0;i<F.length;i++){var r=Math.floor(i/COLS);F[i]=R()*.11*(1-r/ROWS*.6);}
+    var beat=20; // columns per beat
+    // melody: semitone offsets above a base bin, with durations in beats
+    var mel=[[7,1],[9,.5],[11,.5],[12,1.5],[11,.5],[9,1],[7,1],[4,1],[5,.5],[7,.5],[9,1],[7,2],[12,1],[14,.5],[16,.5],[14,1],[12,1],[11,1],[9,1],[7,2]];
+    var c0=4, base=24;
+    mel.forEach(function(n){
+      var len=Math.round(n[1]*beat), f0=base+n[0]*BPO/12;
+      for(var h=1;h<=9;h++){
+        var row=Math.round(f0+BPO*Math.log2(h)); var amp=1/Math.pow(h,.6);
+        for(var c=0;c<len-1;c++){
+          var env=Math.min(1,(c+1)/2)*Math.exp(-c/(len*1.4));
+          var vib=Math.round(Math.sin((c0+c)*.5)*(h>2?.6:0));
+          add(c0+c,row+vib,amp*env);add(c0+c,row+vib+1,amp*env*.45);add(c0+c,row+vib-1,amp*env*.3);
+        }
+      }
+      c0+=len;
+    });
+    // bass and drums on the beat grid
+    var bass=[0,0,-3,-5,0,0,-3,-5,-7,-7,-5,-5,0,0,-3,-5,-7,-5,0,0];
+    for(var b=0;b*beat<COLS;b++){
+      var x=4+b*beat, br=8+bass[b%bass.length]*BPO/12+5;
+      for(var h=1;h<=4;h++){var row=Math.round(br+BPO*Math.log2(h));for(var c=0;c<beat-2;c++)add(x+c,row,.55/h*Math.exp(-c/18));}
+      for(var c=0;c<3;c++)for(var r=0;r<10;r++)add(x+c,r,(.6-r*.04)*Math.exp(-c*.8));           // kick
+      if(b%2===1)for(var c=0;c<3;c++)for(var r=10;r<ROWS;r++)add(x+c,r,(.18+R()*.14)*Math.exp(-c*1.1)*(1-r/ROWS*.4)); // snare
+      for(var k=0;k<2;k++){var hx=x+k*beat/2;for(var c=0;c<2;c++)for(var r=ROWS-30;r<ROWS;r++)add(hx+c,r,(.14+R()*.1)*Math.exp(-c*1.4));} // hats
+    }
+    return F;
+  })();
+  var canvas=document.getElementById('spec'),ctx=canvas.getContext('2d');
+  var off=document.createElement('canvas');off.width=COLS;off.height=ROWS;
+  var octx=off.getContext('2d'),img=octx.createImageData(COLS,ROWS);
+  for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){
+    var v=field[r*COLS+c];v=Math.pow(v,.8);var col=cmap(v),i=((ROWS-1-r)*COLS+c)*4;
+    img.data[i]=col[0];img.data[i+1]=col[1];img.data[i+2]=col[2];img.data[i+3]=255;
+  }
+  octx.putImageData(img,0,0);
+  var progress=reduce?1:0;
+  function size(){var d=window.devicePixelRatio||1,b=canvas.getBoundingClientRect();canvas.width=Math.round(b.width*d);canvas.height=Math.round(b.height*d);draw();}
+  function draw(){
+    var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    var vis=Math.round(COLS*Math.min(1,Math.max(.4,canvas.clientWidth/1000)));
+    var sw=Math.max(1,Math.round(vis*progress));
+    ctx.drawImage(off,0,0,sw,ROWS,0,0,w*sw/vis,h);
+    if(progress<1){var x=w*progress;ctx.fillStyle='rgba(253,236,190,.9)';ctx.fillRect(x-1,0,2,h);}
+  }
+  size();window.addEventListener('resize',size);
+  if(!reduce){var t0=null,D=3200;requestAnimationFrame(function step(ts){if(!t0)t0=ts;progress=Math.min(1,(ts-t0)/D);draw();if(progress<1)requestAnimationFrame(step);});}
 
-		typeSpeed:50,backDelay:700,contentType:"html",loop:!0,resetCallback:function(){newTyped()}}),$(".reset").click(function(){$("#typed").typed("reset")})});
-    </script>
-	<style>
-		#typed {
-			font-size: 40px; /* Adjust the font size as desired */
-		}
-	</style>
+  /* ---------- codebook figure (10 frames x 4 codebooks) ---------- */
+  var cb=document.getElementById('cb'),K=4,T=10,cells=[];
+  var shades=['#5B2A86','#8A3285','#B4407A','#D9576F'];
+  for(var k=0;k<K;k++){
+    var lab=document.createElement('span');lab.className='lab';lab.textContent='Codebook '+(k+1);cb.appendChild(lab);
+    for(var t=0;t<T;t++){var d=document.createElement('span');d.className='c';d.style.background=shades[k];cb.appendChild(d);cells.push(d);}
+  }
+  var tl=document.createElement('div');tl.className='tl';tl.innerHTML='<span>Start</span><span>Time</span><span>Late in the piece</span>';cb.appendChild(tl);
+  // hand-placed patterns: errors start late and cascade into finer codebooks under teacher forcing
+  var M={
+    tf:  ['0000001011','0000011111','0000111111','0001111111'],
+    sass:['0000000000','0000000001','0000000010','0000001000']
+  };
+  function paint(m){for(var k=0;k<K;k++)for(var t=0;t<T;t++)cells[k*T+t].classList.toggle('bad',M[m][k][t]==='1');}
+  var bs=document.querySelectorAll('.seg button');
+  bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});paint(b.dataset.mode);});});
+  paint('tf');
+
+  /* ---------- works list with a small player ---------- */
+  var list=document.getElementById('tracks');
+  var playIcon='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>';
+  var pauseIcon='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" fill="currentColor"/></svg>';
+  var extIcon='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  var current=null;
+  function fmt(s){if(!isFinite(s))return'';s=Math.round(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+  function bars(seed){var R=rng(seed),a=[];for(var i=0;i<72;i++){var x=i/71;a.push(.25+.75*Math.abs(Math.sin(x*9+R()*2))*(.5+.5*R())*(1-Math.pow(2*x-1,8)));}return a;}
+  function drawWave(cv,data,p){
+    var d=window.devicePixelRatio||1,b=cv.getBoundingClientRect();cv.width=b.width*d;cv.height=b.height*d;
+    var g=cv.getContext('2d'),n=data.length,bw=cv.width/n;
+    for(var i=0;i<n;i++){var h=data[i]*cv.height*.9,on=i/n<p;g.fillStyle=on?cmap(.55+.4*i/n).map(Math.round).reduce(function(s,v,j){return s+(j?',':'')+v},'rgb(')+')':'#3A3150';
+      g.fillRect(i*bw+bw*.2,(cv.height-h)/2,bw*.6,h);}
+  }
+  if(WORKS.length){
+    list.hidden=false;var lastGroup=null;
+    WORKS.forEach(function(w,idx){
+      if(w.group&&w.group!==lastGroup){var gh=document.createElement('li');gh.className='group';gh.textContent=w.group;list.appendChild(gh);lastGroup=w.group;}
+      var li=document.createElement('li');li.className='track';
+      var meta='<div class="meta"><b></b><span></span></div>';
+      if(w.src){
+        li.innerHTML='<button class="play" type="button" aria-pressed="false" aria-label="Play">'+playIcon+'</button>'+meta+'<canvas class="wave" aria-hidden="true"></canvas><span class="dur"></span>';
+        var a=new Audio();a.preload='metadata';a.src=w.src;
+        var btn=li.querySelector('.play'),cv=li.querySelector('.wave'),dur=li.querySelector('.dur'),data=bars(idx+3);
+        a.addEventListener('loadedmetadata',function(){dur.textContent=fmt(a.duration);});
+        a.addEventListener('timeupdate',function(){drawWave(cv,data,a.currentTime/(a.duration||1));dur.textContent=fmt(a.duration-a.currentTime);});
+        a.addEventListener('ended',function(){btn.setAttribute('aria-pressed','false');btn.innerHTML=playIcon;});
+        btn.addEventListener('click',function(){
+          if(a.paused){if(current&&current!==a){current.pause();}
+            a.play().then(function(){current=a;document.querySelectorAll('.track .play').forEach(function(x){x.setAttribute('aria-pressed','false');x.innerHTML=playIcon;});btn.setAttribute('aria-pressed','true');btn.innerHTML=pauseIcon;btn.setAttribute('aria-label','Pause');}).catch(function(){});
+          }else{a.pause();btn.setAttribute('aria-pressed','false');btn.innerHTML=playIcon;btn.setAttribute('aria-label','Play');}
+        });
+        cv.addEventListener('click',function(e){var b=cv.getBoundingClientRect();if(a.duration)a.currentTime=(e.clientX-b.left)/b.width*a.duration;});
+        requestAnimationFrame(function(){drawWave(cv,data,0);});
+        window.addEventListener('resize',function(){drawWave(cv,data,a.currentTime/(a.duration||1));});
+      }else{
+        li.innerHTML='<a class="play" href="" aria-label="">'+extIcon+'</a>'+meta+'<canvas class="wave" aria-hidden="true"></canvas><span class="out-wrap">'+(w.length?'<span class="dur"></span>':'')+'<a class="out" href=""></a></span>';
+        li.querySelector('a.out').textContent=w.platform?w.platform:'Listen';if(w.length)li.querySelector('.dur').textContent=w.length;
+        li.querySelectorAll('a').forEach(function(x){x.href=w.url;x.target='_blank';x.rel='noopener';});li.querySelector('a.play').setAttribute('aria-label','Listen to '+w.title+(w.platform?' on '+w.platform:''));
+        var cv2=li.querySelector('.wave'),d2=bars(idx+3);requestAnimationFrame(function(){drawWave(cv2,d2,0);});
+      }
+      li.querySelector('.meta b').textContent=w.title;
+      li.querySelector('.meta span').textContent=[w.project,w.role].filter(Boolean).join('. ');
+      list.appendChild(li);
+    });
+  }
+
+  /* ---------- nav state ---------- */
+  var bar=document.getElementById('bar');
+  window.addEventListener('scroll',function(){bar.classList.toggle('scrolled',window.scrollY>8);},{passive:true});
+  var links=[].slice.call(document.querySelectorAll('.bar nav a[href^="#"]'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)links.forEach(function(a){a.setAttribute('aria-current',a.getAttribute('href')==='#'+e.target.id?'true':'false');});});},{rootMargin:'-35% 0px -60% 0px'});
+    document.querySelectorAll('section.block[id]').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
 </body>
 </html>
