@@ -176,7 +176,9 @@
   .projects h3{font-size:1.02rem}
   .projects h3 a{color:var(--ink)}
   .projects p{font-size:.95rem;color:var(--ink-2);margin-bottom:.4rem}
-  .projects .stack{font-size:.84rem;color:var(--ink-3)}
+  .projects .stack{font-size:.84rem;color:var(--ink-3);margin-bottom:0}
+  .projects > div{display:flex;flex-direction:column}
+  .projects .btns{margin-top:auto;padding-top:.8rem}
 
   footer{margin-top:6rem;border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--ink-3);font-size:.88rem}
   footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
@@ -406,13 +408,13 @@
           <p class="kind">Rhythm game, Ultraviolet Studio</p>
           <h3>Deemo</h3>
           <p>More than 15 dynamic background tracks for the game.</p>
-          <p class="role">Composition, mixing, mastering. Ableton Live. 2024–present.</p>
+          <p class="role">Composition, mixing, mastering. Ableton Live.</p>
         </article>
         <article class="credit">
           <p class="kind">Animated series, 78 episodes</p>
           <h3>DNA×CAT</h3>
           <p>Original sound effects designed and edited for a Taiwanese animated series.</p>
-          <p class="role">Sound design and editing. 2024–present.</p>
+          <p class="role">Sound design and editing.</p>
         </article>
         <article class="credit">
           <p class="kind">Training and performance</p>
@@ -435,20 +437,24 @@
       <div class="block-head"><h2>Writing and projects</h2><a class="aside" href="https://medium.com/@rich.tsai1103">All posts on Medium</a></div>
       <div class="projects">
         <div>
-          <h3><a href="https://medium.com/@rich.tsai1103/data-lakehouse-with-airflow-for-spotify-analytics-workloads-67ac42f33adb">Data lakehouse with Airflow for Spotify analytics</a></h3>
-          <p>A walkthrough on Medium of an end-to-end pipeline that ingests Spotify Web API data into Redshift and S3 and makes it queryable in Athena. <a href="https://github.com/ChenFengTsai/Music_Data_Lakehouse_Airflow_Redshift">Code</a></p>
-          <p class="stack">Airflow, Redshift, Glue, Athena</p>
+          <h3><a href="https://medium.com/@rich.tsai1103/real-time-crypto-trading-system-with-alpaca-api-and-transformer-model-b8bf1df42f36">Real-time crypto trading with a Transformer model</a></h3>
+          <p>Streams live trade and quote data through the Alpaca API, predicts Bitcoin prices with a BERT-style Transformer with time embeddings, and submits orders based on its predictions.</p>
+          <p class="stack">Python, TensorFlow, Alpaca API, asyncio</p>
+          <div class="btns"><a href="https://medium.com/@rich.tsai1103/real-time-crypto-trading-system-with-alpaca-api-and-transformer-model-b8bf1df42f36">Medium post</a><a href="https://github.com/ChenFengTsai/Crypto-real-time-trading-system">Code</a></div>
         </div>
         <div>
-          <h3><a href="https://github.com/ChenFengTsai/SpeechRecognition_Emotion_Summary_API">Speech emotion and summarization API</a></h3>
+          <h3><a href="https://medium.com/@rich.tsai1103/speech-recognition-with-emotion-and-summarization-api-using-bert-d3b00e47c927">Speech emotion and summarization API</a></h3>
           <p>Transcribes speech, flags aggressive tone with a BERT classifier and summarizes the content, served as a Flask web API.</p>
           <p class="stack">TensorFlow, BERT, Flask</p>
+          <div class="btns"><a href="https://medium.com/@rich.tsai1103/speech-recognition-with-emotion-and-summarization-api-using-bert-d3b00e47c927">Medium post</a><a href="https://github.com/ChenFengTsai/SpeechRecognition_Emotion_Summary_API">Code</a></div>
         </div>
         <div>
-          <h3><a href="https://github.com/ChenFengTsai/Liquid_Level_Drone">Drone liquid-level monitoring</a></h3>
+          <h3><a href="https://medium.com/@rich.tsai1103/aerial-robotics-tello-drone-redefining-liquid-level-monitoring-7019f0d361d6">Drone liquid-level monitoring</a></h3>
           <p>Capstone lead. A Tello drone with a fine-tuned YOLOv5 model that reads bottle fill levels. Honorable Mention, UChicago Capstone Showcase 2023.</p>
           <p class="stack">C++, YOLOv5, GCP Vertex AI</p>
+          <div class="btns"><a href="https://medium.com/@rich.tsai1103/aerial-robotics-tello-drone-redefining-liquid-level-monitoring-7019f0d361d6">Medium post</a><a href="https://github.com/ChenFengTsai/Liquid_Level_Drone">Code</a></div>
         </div>
+      </div>
       </div>
     </section>
   </div>
